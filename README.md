@@ -27,6 +27,14 @@
 - LibreOffice (用于文档转换)
 - pip 包管理工具
 
+## 安装与运行
+
+### 前提条件
+
+- Python 3.7+
+- LibreOffice (用于文档转换)
+- pip 包管理工具
+
 ### 安装步骤
 
 1. 克隆仓库：
@@ -35,18 +43,29 @@
    cd student-union-application
    ```
 
-2. 安装依赖：
+2. 创建并激活虚拟环境（推荐，可选，可以直接运行第三步）：
+   ```bash
+   # Linux/macOS
+   python -m venv venv
+   source venv/bin/activate
+
+   # Windows
+   python -m venv venv
+   venv\Scripts\activate
+   ```
+
+3. 安装依赖：
    ```bash
    pip install -r requirements.txt
    ```
 
-3. 确保系统中安装了LibreOffice：
+4. 确保系统中安装了LibreOffice：
    - Ubuntu/Debian: `sudo apt install libreoffice`
    - CentOS/RHEL: `sudo yum install libreoffice`
    - macOS: `brew install libreoffice`
    - Windows: 从[官网](https://www.libreoffice.org/)下载安装
 
-4. 创建必要的目录：
+5. 创建必要的目录：
    ```bash
    mkdir -p tmp/
    ```
@@ -54,16 +73,26 @@
 ### 运行应用
 
 ```bash
+# 确保虚拟环境已激活
 python app.py
 ```
 
 应用将运行在 `http://localhost:5000`
 
+### 停止应用后
+
+当完成使用后，可以停用虚拟环境：
+```bash
+deactivate
+```
+
 ### 生产环境部署
 
-建议使用Gunicorn + Nginx部署：
+建议使用Gunicorn + Nginx部署（在虚拟环境中）：
 
 ```bash
+# 激活虚拟环境后
+pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
 
