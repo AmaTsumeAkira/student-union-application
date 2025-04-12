@@ -92,6 +92,70 @@ app.config.update({
     'ALLOWED_EXTENSIONS': {'png', 'jpg', 'jpeg', 'pdf'}  # 允许的文件类型
 })
 ```
+## 模板文件要求
+
+1. 必须使用`.ods`格式（OpenDocument Spreadsheet）
+2. 模板应包含所有必要的表格结构和样式
+3. 推荐使用LibreOffice或OpenOffice编辑模板
+
+## 占位符格式
+
+系统支持两种占位符格式：
+
+1. **简单格式**：`${字段名}`
+   - 示例：`${name}` 会被替换为表单中的"name"字段值
+
+2. **双花括号格式**：`{{字段名}}`
+   - 示例：`{{xb}}` 会被替换为表单中的"xb"（性别）字段值
+
+## 图片占位符特殊处理
+
+图片占位符需要特殊格式：
+
+```xml
+<draw:image xlink:href="Pictures/${image1}" ...>
+  <svg:desc>${image1}</svg:desc>
+</draw:image>
+```
+
+系统会自动：
+1. 将`xlink:href`属性中的图片路径替换为实际上传的图片
+2. 移除`<svg:desc>`中的占位符标记
+
+## 模板制作步骤
+
+1. 在LibreOffice中设计好表格样式
+2. 在需要动态填充的位置插入文本占位符
+   - 例如：在"姓名"单元格中输入`${name}`
+3. 如需插入图片：
+   - 先插入一个任意图片作为占位
+   - 右键图片 → 编辑 → 将图片路径改为`Pictures/${image1}`
+   - 在图片描述中添加`${image1}`
+4. 保存为`.ods`格式
+
+## 模板注意事项
+
+1. 占位符区分大小写，必须与表单字段名完全一致
+2. 图片占位符必须严格遵循XML格式要求
+3. 修改模板后建议先在LibreOffice中测试打开
+4. 复杂的格式（如合并单元格）应在模板中预先设置好
+5. 系统会自动处理换行符，但复杂排版建议在模板中固定
+
+## 示例模板片段
+
+```xml
+<table:table-cell>
+  <text:p>姓名：${name}</text:p>
+</table:table-cell>
+<table:table-cell>
+  <text:p>性别：{{xb}}</text:p>
+</table:table-cell>
+<draw:frame>
+  <draw:image xlink:href="Pictures/${image1}">
+    <svg:desc>${image1}</svg:desc>
+  </draw:image>
+</draw:frame>
+```
 
 ## 注意事项
 
